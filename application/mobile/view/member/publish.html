@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的发布</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    {include file="public/style" /}
+</head>
+
+<body style="background-color: #F0F0F0;" id="publish">
+    <div class="myb_list">
+        <div class="myb_item" v-for="vo in list">
+            <div class="myb_time">
+                <i class="fa fa-calendar"></i><span v-text="vo.go_time"></span>
+                <span class="state jx" v-if="vo.pass == 0">
+                    <i class="fa fa-circle"></i>审核中
+                </span>
+                <span v-if="vo.pass == 1" class="state succ">
+                    <i class="fa fa-circle"></i>审核通过
+                </span>
+            </div>
+            <div class="myb_desc">
+                <div class="mybd_l">
+                    <p><i class="fa fa-map-marker"></i>始发地：{{vo.from}}</p>
+                    <p><i class="fa fa-map-marker"></i>目的地：{{vo.to}}</p>
+                    <p><i class="fa "></i>车主：{{vo.name}}</p>
+                    <p><i class="fa "></i>车牌号：{{vo.number}}</p>
+                    <p><i class="fa"></i>联系方式：{{vo.phone}}</p>
+                    <p><i class="fa "></i>品牌：{{vo.bname}}</p>
+                    <p><i class="fa "></i>颜色：{{vo.color}}</p>
+                </div>
+                <div class="mybd_r">
+                    <div class="mybd_rs" v-if="vo.pass == 0">
+                        <a href="tel:{$con.phoneNo}"><img src="/mobile/img/phone.png" alt=""></a>
+                        <button @click="delCar(vo.id,$index)" type="button" style="margin-top: 10px">取消审核</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;margin-top:10px;" id="loadmore">
+            <i id="loadmore_i" class="fa fa-spin fa-spinner" style="font-size: 20px"></i>
+        </div>
+    </div>
+
+    <script type="text/javascript" >
+    $(function(){
+        $(".myb_desc .mybd_r .mybd_rs").each(function(){
+            var s = $(this);
+            s.css("margin-top",(s.parent().parent().height()-s.height()));
+        });
+    });
+    $(document).ready(function() {
+        $(window).scroll(function() {
+            if ($(document).scrollTop() >= $(document).height() - $(window).height())
+            {
+                if(vn.more == true){
+                    vn.listData(++vn.page);
+                }else{
+                    $("#loadmore").hide();
+                }
+            }
+        });
+    });
+    var vn = new Vue({
+        el: '#publish',
+        data: {
+            list: [],
+            page: 0,
+            busy: false,
+            more:true,
+        },
+        created:function(){
+            if(this.busy==false){
+                $("#loadmore").show(500);
+            }
+            this.listData(this.page);
+        },
+        methods: {
+            listData: function(page){
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("mobile/member/publish")}',
+                    dataType: 'json',
+                    cache: false,
+                    data: {page:page},
+                    success: function(data) {
+                        if(data.length > 0){
+                            setTimeout(function(){
+                                vn.busy = true;
+                                vn.list = vn.list.concat(data);
+                            }, 2000);
+                        }else{
+                            vn.more = false;
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                      console.log('系统错误');
+                    }
+                });
+            },
+            delCar:function(id,item){
+                layer.open({
+                    content: '你是否取消审核？',
+                    btn: ['确认', '取消'],
+                    shadeClose: true,
+                    yes: function(index){
+                        $.ajax({
+                            type: "POST",
+                            url: '{:url("mobile/car/delete")}',
+                            dataType: 'json',
+                            cache: false,
+                            data: {id:id},
+                            success: function(data) {
+                                if(data.status > 0){
+                                    vn.list.splice(item, 1);
+                                    layer.close(index);
+                                }else{
+                                    layer.close(index);
+                                    setTimeout(function(){
+                                        layer.msg(data.msg);
+                                    }, 2000);
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                              console.log('系统错误');
+                            }
+                        });
+                    }, no: function(){
+                        layer.msg('取消');
+                    }
+                });
+            },
+        }
+    })
+    </script>
+</body>
+
+</html>

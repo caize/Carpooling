@@ -1,0 +1,29 @@
+<header class="zw_head">
+    <div class="zwh_logo" onclick=window.location.href="{:url('mobile/index/index')}">
+        <img src="{$con.mallLogo}" alt="">
+    </div>
+    <div class="zwh_menu" onclick="menulist()">
+        <span style="margin-top:5px; ">菜单&nbsp;</span><img id="menubtn" src="/mobile/img/menu.png" alt="">
+    </div>
+</header>
+<div class="zw_black" onclick="menulist()">
+</div>
+<div class="zwh_menulist">
+    <div class="zwhml_a">
+        <a href="{:url('mobile/index/index')}">首页</a>
+    </div>
+    <div class="zwhml_a">
+        <a href="/mobile/active/index.html">活动</a>
+    </div>
+    <div class="zwhml_a">
+        <a href="{:url('mobile/article/index')}">文章</a>
+    </div>
+    <div class="zwhml_a">
+        <a href="{:url('mobile/member/index')}">个人中心</a>
+    </div>
+    {if !session('userMember')}
+    <div class="zwhml_a">
+        <a href="{:url('mobile/base/login')}">登录/注册</a>
+    </div>
+    {/if}
+</div>

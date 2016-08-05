@@ -1,0 +1,90 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="navbar-container">
+            <!-- Navbar Barnd -->
+            <div class="navbar-header pull-left">
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <img src="/assets/img/logo.png" alt="" />
+                    </small>
+                </a>
+            </div>
+            <!-- /Navbar Barnd -->
+
+            <!-- Sidebar Collapse -->
+            <div class="sidebar-collapse" id="sidebar-collapse">
+                <i class="collapse-icon fa fa-bars"></i>
+            </div>
+            <!-- /Sidebar Collapse -->
+            <div class="navbar-header pull-right">
+                <div class="navbar-account">
+                    <ul class="account-area">
+                        <li>
+                            <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                                <div class="avatar" title="View your public profile">
+                                    <img src="/assets/img/avatars/adam-jansen.jpg">
+                                </div>
+                                <section>
+                                    <h2><span class="profile"><span>{$userInfo}</span></span></h2>
+                                </section>
+                            </a>
+                            <!--Login Area Dropdown-->
+                            <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+                                <!--Avatar Area-->
+                                <li class="edit">
+                                    <a href="#" class="pull-right">用户设置</a>
+                                </li>
+                                <!--/Theme Selector Area-->
+                                <li class="dropdown-footer" id="bootbox-confirm" style="cursor: pointer;">
+                                    <a>
+                                        退 出
+                                    </a>
+                                </li>
+                            </ul>
+                            <!--/Login Area Dropdown-->
+                        </li>
+                    </ul>
+                    <div class="setting">
+                        <a id="btn-setting" title="Setting" href="#">
+                            <i class="icon glyphicon glyphicon-cog"></i>
+                        </a>
+                    </div>
+                    <div class="setting-container">
+                        <label>
+                            <a class="dropdown-footer"><span class="text" style="color: #fff;">退 出</span></a>
+                        </label>
+                    </div>
+                    <!-- Settings -->
+                </div>
+            </div>
+            <!-- /Account Area and Settings -->
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        "use strict";
+        $(".dropdown-footer").on('click', function () {
+            bootbox.confirm("是否确定退出", function (result) {
+                if (result) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/admin/common/logout',
+                        dataType: 'json',
+                        cache: false,
+                        success: function(data) {
+                            if(data.status>0){
+                                window.location.href = '/admin/login.html';
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(xhr);
+                            console.log(status);
+                            console.log(error);
+                        }
+                    });
+                }
+            });
+        });
+    })
+</script>

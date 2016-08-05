@@ -1,0 +1,292 @@
+html {
+  font-size: 62.5%; }
+
+* {
+  margin: 0;
+  padding: 0; }
+
+body {
+  font-size: 1.4rem; }
+
+a {
+  text-decoration: none; }
+
+body,
+#menu,
+div,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a {
+  font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", STXihei, SimSun, Heiti, sans-serif !important; }
+
+li {
+  list-style: none; }
+
+body {
+  background: #fff; }
+
+#btn_login button {
+  background: #FDAA4F;
+  color: #fff;
+  border-radius: 0; }
+
+.form_msg {
+  text-align: center;
+  color: #f44; }
+
+.login_lostreg {
+  text-align: center;
+  padding: 20px; }
+
+#sendyzm {
+  border-radius: 0;
+  height: 47px;
+  background: #FDAA4F;
+  text-align: center;
+  color: #fff;
+  line-height: 47px; }
+
+#sendyzmimg {
+  height: 47px;
+  background: #fff;
+  text-align: center;
+  color: #fff;
+  line-height: 47px; }
+
+.myb_list {
+  width: 100%;
+  background-color: #F0F0F0;
+  color: #888;
+  height: 100%; }
+  .myb_list .myb_item {
+    margin-bottom: 10px;
+    min-height: 20px;
+    overflow: hidden;
+    background-color: #fff;
+    padding-bottom: 10px; }
+    .myb_list .myb_item .fa {
+      width: 20px;
+      color: #FDAA4F;
+      text-align: center; }
+    .myb_list .myb_item .myb_time {
+      padding: 10px;
+      border-bottom: 1px #eee solid; }
+      .myb_list .myb_item .myb_time .state {
+        float: right; }
+      .myb_list .myb_item .myb_time .jx {
+        color: #FDAA4F; }
+      .myb_list .myb_item .myb_time .succ {
+        color: #aaa; }
+        .myb_list .myb_item .myb_time .succ .fa {
+          color: #aaa; }
+    .myb_list .myb_item .myb_desc {
+      padding: 10px;
+      min-height: 10px;
+      overflow: hidden; }
+      .myb_list .myb_item .myb_desc .mybd_l {
+        float: left;
+        width: 70%; }
+        .myb_list .myb_item .myb_desc .mybd_l p {
+          letter-spacing: 2px;
+          line-height: 20px; }
+      .myb_list .myb_item .myb_desc .mybd_r {
+        width: 30%;
+        text-align: center;
+        float: left; }
+        .myb_list .myb_item .myb_desc .mybd_r .mybd_rs {
+          bottom: 0; }
+          .myb_list .myb_item .myb_desc .mybd_r .mybd_rs img {
+            width: 50%;
+            max-width: 50px; }
+          .myb_list .myb_item .myb_desc .mybd_r .mybd_rs button {
+            width: 80%;
+            height: 30px;
+            border: 0;
+            color: #fff;
+            background-color: #FDAA4F; }
+
+.user {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden; }
+  .user .user_bg {
+    height: 220px; }
+  .user img {
+    position: absolute;
+    bottom: 0; }
+  .user .txpng {
+    width: 200px;
+    height: 70px;
+    position: absolute;
+    bottom: 30px;
+    left: 30px; }
+    .user .txpng img {
+      border-radius: 35px;
+      border: 3px #FDAA4F solid;
+      width: 70px;
+      height: 70px; }
+  .user .username {
+    width: 200px;
+    position: absolute;
+    bottom: 55px;
+    left: 130px;
+    color: #fff; }
+  .user .userset {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    border-radius: 20px;
+    top: 10px;
+    right: 10px; }
+    .user .userset img {
+      width: 40px;
+      height: 40px; }
+
+.usermenu {
+  width: 100%; }
+  .usermenu .user_item {
+    background-color: #fff;
+    height: 80px;
+    line-height: 80px; }
+    .usermenu .user_item img {
+      margin: 15px;
+      margin-left: 20px;
+      width: 50px;
+      float: left; }
+    .usermenu .user_item .user_menut {
+      float: left;
+      margin-left: 30px; }
+      .usermenu .user_item .user_menut a {
+        color: #888; }
+
+.loginout {
+  margin-top: 150px;
+  width: 100%;
+  text-align: center; }
+  .loginout button {
+    border: 0;
+    background-color: #FDAA4F;
+    width: 50%;
+    height: 40px;
+    font-size: 16px;
+    color: #fff;
+    border-radius: 1px; }
+
+.userset {
+  width: 100%;
+  background-color: #fff; }
+  .userset .us_img {
+    clear: both;
+    width: 100%;
+    height: 80px;
+    border-bottom: 1px #e6e6e6 solid; }
+    .userset .us_img .us_a {
+      float: left;
+      margin-left: 40px;
+      line-height: 80px;
+      width: 80px; }
+    .userset .us_img .us_imgr {
+      float: right;
+      height: 80px;
+      line-height: 80px;
+      width: 80px;
+      padding: 5px;
+      overflow: hidden; }
+      .userset .us_img .us_imgr img {
+        border-radius: 100px;
+        height: 70px;
+        width: 70px; }
+  .userset .us_name {
+    clear: both;
+    width: 100%;
+    height: 80px;
+    border-bottom: 1px #e6e6e6 solid; }
+    .userset .us_name .us_nl {
+      float: left;
+      margin-left: 40px;
+      line-height: 80px;
+      width: 80px; }
+    .userset .us_name .us_nr {
+      float: right;
+      margin-right: 5px;
+      line-height: 80px;
+      padding: 0 5px; }
+  .userset .us_sub {
+    width: 100%;
+    text-align: center; }
+    .userset .us_sub .us_subbtn {
+      text-align: center;
+      width: 70%;
+      border-radius: 5px;
+      background-color: #FDAA4F;
+      line-height: 40px;
+      height: 40px;
+      border: 0;
+      color: #fff; }
+
+.pay_desc {
+  background-color: #fff;
+  padding: 10px; }
+  .pay_desc hr {
+    border: 1px solid #aaa; }
+  .pay_desc p {
+    line-height: 22px;
+    color: #666;
+    font-size: 16x; }
+  .pay_desc .pd_time {
+    font-weight: bold;
+    color: #333;
+    font-size: 17x; }
+  .pay_desc .pd_to {
+    margin-top: 8px;
+    border-top: 1px solid #eee;
+    padding: 8px 0;
+    color: #FDAA4F;
+    font-size: 18px; }
+
+.pay_way {
+  margin-top: 20px;
+  background-color: #fff;
+  width: 100%; }
+  .pay_way .paywitem {
+    height: 50px;
+    line-height: 50px; }
+    .pay_way .paywitem img {
+      margin: 10px;
+      height: 30px;
+      float: left; }
+    .pay_way .paywitem .pw_t {
+      margin-left: 20px;
+      text-align: center;
+      font-size: 18px;
+      line-height: 50px;
+      height: 50px; }
+    .pay_way .paywitem .fa-check {
+      color: #929292;
+      float: right;
+      font-size: 20px;
+      line-height: 50px;
+      margin-right: 20px; }
+
+.pay_btn {
+  margin-top: 100px;
+  text-align: center; }
+  .pay_btn p {
+    font-size: 20px;
+    color: #FDAA4F; }
+  .pay_btn button {
+    border: 0;
+    border-radius: 1px;
+    color: #fff;
+    background-color: #FDAA4F;
+    width: 95%;
+    height: 40px;
+    font-size: 18px; }
+
+/*# sourceMappingURL=custom.css.map */

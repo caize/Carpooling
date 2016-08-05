@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的发布</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/mobile/css/custom.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="/mobile/css/sm.min.css">
+    <link rel="stylesheet" href="/mobile/css/sm-extend.min.css">
+    <style type="text/css" media="screen">
+    body{
+        background-color: #fff;
+    }
+    .list-block {
+        margin: 0 0;
+    }
+    .pickerinput {
+        text-align: right;
+        height: auto !important;
+        font-size: 16px;
+    }
+    .iteminput {
+        text-align: right;
+        height: auto !important;
+        font-size: 16px;
+    }
+    .uploadimgs {
+        /*width:99%;*/
+        background-color: #fff;
+        width: 100%;
+        min-height: 10px;
+        overflow: hidden;
+    }
+    .uploadimg {
+        float: left;
+        width: 33.33%;
+        /*padding: 5px;*/
+        background-color: #fff;
+        height: 107px;
+        overflow: hidden;
+    }
+    .imgs {
+        margin: 5px;
+        /*width: 100%;*/
+        height: 97px;
+        text-align: center;
+        box-shadow: 2px 2px 5px #808080;
+    }
+    .imgs img {
+        width: 100%;
+        /*height: 107px;*/
+    }
+    .uploadimgadd {
+        float: left;
+        width: 33.33%;
+        height: 107px;
+        /*margin: 5px;*/
+    }
+    .adddesc {
+        margin: 5px;
+        padding: 25px 0;
+        margin: 5px;
+        text-align: center;
+        border: 1px solid #eee;
+        overflow: hidden;
+        font-size: 16px;
+    }
+    .list-block .item-content {
+        padding-left: 0;
+        font-size: 16px;
+        color: #888;
+    }
+    .list-block .item-title {
+        padding-left: .75rem;
+    }
+    .sub {
+        width: 100%;
+        text-align: center;
+        clear: both;
+    }
+    .sub button {
+        background-color: #FDAA4F;
+        width: 95%;
+        margin: 30px auto;
+        border: 0;
+        padding: 10px;
+        border-radius: 1px;
+        color: #fff;
+        font-size: 17px;
+    }
+    </style>
+    <script src="/assets/vue/vue.js"></script>
+	<script src="/assets/vue/vue-validator.js"></script>
+	<script src="/assets/vue/vue-resource.js"></script>
+</head>
+
+<body id="car">
+    <div class="page page-current">
+        <div class="content">
+            <div class="list-block ">
+                <ul>
+                    <li class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">车辆品牌</div>
+                            <div class="item-after">
+                                <input placeholder="请选择车辆品牌" class="pickerinput" type="text" id='brand' />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">车主姓名</div>
+                            <div class="item-after">
+                                <input placeholder="请输入车主姓名" class="iteminput" type="text" v-model="car.name"/>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">车型</div>
+                            <div class="item-after">
+                                <input placeholder="请输入车辆车型" class="iteminput" type="text" v-model="car.type" />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">颜色</div>
+                            <div class="item-after">
+                                <input placeholder="请输入车辆颜色" class="iteminput" type="text" v-model="car.color"/>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">车牌号码</div>
+                            <div class="item-after">
+                                <input placeholder="请输入车牌号码" class="iteminput" type="text" v-model="car.number"/>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">联系方式</div>
+                            <div class="item-after">
+                                <input placeholder="请输入联系方式" class="iteminput" type="text" v-model="car.phone"/>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">始发地</div>
+                            <div class="item-after">
+                                <input placeholder="请选择始发地" class="pickerinput" type="text" id='pickercfd' />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">目的地</div>
+                            <div class="item-after">
+                                <input placeholder="请选择目的地" class="pickerinput" type="text" id='pickermdd' />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">出发时间</div>
+                            <div class="item-after">
+                                <input placeholder="请选择出发时间" class="pickerinput" type="text" id='datetime-picker' v-model="car.go_time"/>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">上传车辆图片</div>
+                        </div>
+                    </li>
+                    <!-- <input type="file" id="upload" hidden> -->
+                    <div class="uploadimgs">
+                        <div class="uploadimgadd">
+                            <label>
+                                <div class="adddesc"><span class="icon icon-picture"></span>
+                                    <br> 添加图片</div>
+                                <input type="file" id="upload" hidden>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="sub">
+                        <button @click="addCar()">提交</button>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script type='text/javascript' src='/mobile/js/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='/mobile/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='/mobile/js/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript'>
+    $.init();
+    var brandId = [];
+    var brand = [];
+    var areaId = [];
+    var area = [];
+    $(function(){
+        var bb = {$brand};
+        var aa ={$area};
+        for (var i = 0; i < bb.length; i++) {
+            brand.push(bb[i].name);
+            brandId.push(bb[i].id);
+        }
+        for (var i = 0; i < aa.length; i++) {
+            area.push(aa[i].name);
+            areaId.push(aa[i].id);
+        }
+    });
+    $("#brand").picker({
+        toolbarTemplate: '<header class="bar bar-nav"><button class="button button-link pull-right close-picker">确定</button><h1 class="title">选择地址</h1></header>',
+        rotateEffect: "true",
+        cols: [{
+            textAlign: 'center',
+            values: brand
+        }],
+        onOpen: function() {},
+        onClose: function() {
+            vn.car.bid = brandId[this.cols[0].activeIndex];
+        }
+    });
+    $("#pickercfd").picker({
+        toolbarTemplate: '<header class="bar bar-nav"><button class="button button-link pull-right close-picker">确定</button><h1 class="title">选择地址</h1></header>',
+        rotateEffect: "true",
+        cols: [{
+            textAlign: 'center',
+            values: area
+        }],
+        onOpen: function() {},
+        onClose: function() {
+            vn.car.from = areaId[this.cols[0].activeIndex];
+        }
+    });
+    $("#pickermdd").picker({
+        toolbarTemplate: '<header class="bar bar-nav"><button class="button button-link pull-right close-picker">确定</button><h1 class="title">选择地址</h1></header>',
+        rotateEffect: "true",
+        cols: [{
+            textAlign: 'center',
+            values: area
+        }],
+        onOpen: function() {
+        },
+        onClose: function() {
+            vn.car.to = areaId[this.cols[0].activeIndex];
+        }
+    });
+    $("#datetime-picker").datetimePicker({});
+    var input = document.getElementById("upload");
+    var base64 = new Array(); //定义一数组
+    window.onload = function() {
+        if (typeof(FileReader) === 'undefined') {
+            result.innerHTML = "抱歉，你的浏览器不支持 FileReader，请使用现代浏览器操作！";
+            input.setAttribute('disabled', 'disabled');
+        } else {
+            input.addEventListener('change', readFile, false);
+        }
+    }
+
+    function readFile() {
+        var file = this.files[0];
+        //这里我们判断下类型如果不是图片就返回 去掉就可以上传任意文件
+        if (!/image\/\w+/.test(file.type)) {
+            alert("请确保文件为图像类型");
+            return false;
+        }
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e) {
+            base64 = this.result;
+            var img = '<div class="uploadimg"><div class="imgs"><img src="' + base64 + '" alt=""></div></div>';
+            $(".uploadimgadd").remove();
+            input = null;
+            $(".uploadimgs").append(img);
+            $(".uploadimgs").append('<div class="uploadimgadd"><label><div class="adddesc"><span class="icon icon-picture"></span><br> 上传图片</div><input type="file" id="upload" hidden></label></div>');
+            input = document.getElementById("upload");
+            input.addEventListener('change', readFile, false);
+            $(".imgs input").on("change", function() {
+                changeFile($(this));
+            });
+        }
+    } //删除图片
+    $(".uploadimgs").on("click",".uploadimg", function() {
+        var img = $(this);
+        var modal = $.modal({
+            title: '删除',
+            text: '确定删除图片吗？',
+            buttons: [{
+                text: '取消'
+            }, {
+                text: '确定',
+                bold: true,
+                onClick: function() {
+                    img.remove();
+                }
+            }]
+        });
+    });
+    //换图片
+    function changeFile(obj) {
+        var file = obj[0].files[0];
+        if (!/image\/\w+/.test(file.type)) {
+            alert("请确保文件为图像类型");
+            return false;
+        }
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e) {
+            base64 = this.result;
+            obj.siblings().attr("src", base64);
+        }
+    }
+    var vn = new Vue({
+	    el: '#car',
+	    data: {
+            car:{thumb:[]}
+	    },
+	    methods: {
+            addCar:function(){
+                if(this.car.bid === undefined){
+                    this.msg('请选择车辆品牌');
+                    return;
+                }
+                if(this.car.name === undefined){
+                    this.msg('请输入车主姓名');
+                    return;
+                }
+                if(this.car.type === undefined){
+                    this.msg('请输入车辆车型');
+                    return;
+                }
+                if(this.car.color === undefined){
+                    this.msg('请输入车辆颜色');
+                    return;
+                }
+                if(this.car.number === undefined){
+                    this.msg('请输入车牌号码');
+                    return;
+                }
+                if(this.car.phone === undefined){
+                    this.msg('请输入联系方式');
+                    return;
+                }
+                if(!(/^1[3|4|5|7|8]\d{9}$/.test(this.car.phone))){
+                    this.msg("手机号码有误，请重填");
+                    return;
+                }
+                if(this.car.from === undefined){
+                    this.msg('请选择始发地');
+                    return;
+                }
+                if(this.car.to === undefined){
+                    this.msg('请选择目的地');
+                    return;
+                }
+                if(this.car.go_time === undefined){
+                    this.msg('请选择出发时间');
+                    return;
+                }
+                $('.uploadimg').each(function(index){
+                    vn.car.thumb.push($(this).find('img').attr('src'));
+                });
+                if(this.car.thumb.length == 0){
+                    this.msg('请上传车辆图片');
+                    return;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("mobile/car/add")}',
+                    dataType: 'json',
+                    cache: false,
+                    data: this.car,
+                    success: function(data){
+                        if(data.status>0){
+                            vn.msg('发布成功');
+                            location.reload();
+                        }else{
+                            vn.msg(data.msg);
+                        }
+                        console.log(data);
+                    },
+                    error: function(xhr, type){
+                        console.log('Ajax error!')
+                    }
+                })
+            },
+            msg:function(msg){
+                $.toast(msg, 1000);
+            },
+            checkData:function(key,msg){
+                if(this.car[key] === undefined){
+                    this.msg(msg);
+                    return;
+                }
+            }
+	    }
+  	})
+    </script>
+</body>
+
+</html>

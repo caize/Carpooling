@@ -1,0 +1,143 @@
+{extend name="base:base" /}
+{block name="style"}
+<style>
+    .input-label{
+        width:500px;
+    }
+</style>
+{/block}
+{block name="content"}
+<div class="page-content" id="addUser">
+    <!-- Page Breadcrumb -->
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="#">控制面板</a>
+            </li>
+            <li>
+                <a href="#">权限管理</a>
+            </li>
+            <li class="active">管理员添加</li>
+        </ul>
+    </div>
+    <!-- /Page Breadcrumb -->
+    <!-- Page Header -->
+    <div class="page-header position-relative">
+        <div class="header-title">
+            <h1>
+                管理员添加
+            </h1>
+        </div>
+        <!--Header Buttons-->
+        <div class="header-buttons">
+            <a class="sidebar-toggler" href="#">
+                <i class="fa fa-arrows-h"></i>
+            </a>
+            <a class="refresh" id="refresh-toggler" href="">
+                <i class="glyphicon glyphicon-refresh"></i>
+            </a>
+            <a class="fullscreen" id="fullscreen-toggler" href="#">
+                <i class="glyphicon glyphicon-fullscreen"></i>
+            </a>
+        </div>
+        <!--Header Buttons End-->
+    </div>
+    <!-- /Page Header -->
+    <!-- Page Body -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="widget flat radius-bordered">
+                    <div class="widget-header bordered-bottom bordered-themeprimary">
+                        <span class="widget-caption">管理员添加</span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div id="horizontal-form">
+                        <validator name="addUserValidation">
+                            <form class="form-horizontal" role="form" novalidate>
+                                <div class="form-group">
+                                    <label for="input" class="col-sm-2 control-label no-padding-right">管理员角色</label>
+                                    <div class="col-sm-10">
+                                        <select id="e1" name="rid" class="input-label" v-model="user.role_id">
+                                            <option value="0" />无角色
+                                            {volist name="$lists" id="vo"}
+                                                <option value="{$vo.id}" />{$vo.name}
+                                            {/volist}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input" class="col-sm-2 control-label no-padding-right">用户名</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" name="username" class="form-control input-label" id="input" placeholder="用户名" v-validate:username="{ required: true}" v-model="user.username">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input" class="col-sm-2 control-label no-padding-right">密码</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control input-label" id="input" name="password" placeholder="密码" v-model="user.password" v-validate:password="{ required: true }">
+                                    <p class="help-block" v-if="msg" style="color: red;">{{msg}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button @click="addUser()" :disabled="$addUserValidation.invalid" type="button" class="btn btn-blue">保 存</button>
+                                    </div>
+                                </div>
+                            </form>
+                            </validator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Body -->
+</div>
+{/block}
+{block name="script"}
+    <script>
+        var vm = new Vue({
+          el: '#addUser',
+          data: {
+            user: {},
+            msg:''
+          },
+          init: function () {
+          },
+          methods: {
+            addUser: function () {
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("admin/user/add")}',
+                    dataType: 'json',
+                    cache: false,
+                    data: this.user,
+                    success: function(data) {
+                        if(data.status>0){
+                            $('#modal-success').modal('show');
+                            $(".modal-body").html("添加成功");
+                            setTimeout(function(){
+                                window.location.href = '{:url("Admin/user/index")}';
+                            },3*1000);
+                        }else{
+                            vm.$set('msg',data.msg)
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                    }
+                });
+            }
+          }
+        })
+    </script>
+{/block}

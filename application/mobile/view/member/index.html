@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>我的个人中心</title>
+    {include file="public/style" /}
+</head>
+
+<body style="background-color: #f0f0f0;" id="member">
+  <div class="user">
+      <img class="user_bg" src="/mobile/img/bg.png" alt="">
+      <div class="txpng">
+          <img src="{$user.auth}" alt="">
+      </div>
+      <div class="username">
+          <span>{$user.name}</span>
+      </div>
+      <div class="userset" onclick=window.location.href='{:url("mobile/Member/setting")}'>
+          <img src="/mobile/img/set.png" alt="">
+      </div>
+  </div>
+  <div class="usermenu">
+      <div class="user_item" onclick=window.location.href='{:url("mobile/Member/book")}'>
+          <img src="/mobile/img/menu.png" alt="">
+          <div class="user_menut"><a>我的预约</a></div>
+      </div>
+      <div class="user_item" onclick=window.location.href='{:url("mobile/Member/publish")}'>
+          <img src="/mobile/img/mypu.png" alt="">
+          <div class="user_menut"><a>我的发布</a></div>
+      </div>
+  </div>
+    <div class="loginout">
+        <button type="button"  @click="lgout()">退出登陆</button>
+    </div>
+</body>
+<script>
+   var vn = new Vue({
+    el: '#member',
+    methods: {
+      lgout: function(){
+        layer.open({
+            content: '你是否登出？',
+            btn: ['确认', '取消'],
+            shadeClose: true,
+            yes: function(){
+                window.location.href = '{:url("mobile/member/lgout")}';
+            }, no: function(){
+                layer.msg('取消');
+            }
+        });
+      },
+    }
+  })
+</script>
+</html>

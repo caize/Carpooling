@@ -1,0 +1,138 @@
+{extend name="base:base" /}
+
+{block name="content"}
+<div class="page-content">
+    <!-- Page Breadcrumb -->
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="#">控制面板</a>
+            </li>
+            <li>
+                <a href="#">文章列表</a>
+            </li>
+            <li class="active">文章列表</li>
+        </ul>
+    </div>
+    <!-- /Page Breadcrumb -->
+    <!-- Page Header -->
+    <div class="page-header position-relative">
+        <div class="header-title">
+            <h1>
+                文章列表
+                <small>
+                </small>
+            </h1>
+        </div>
+        <!--Header Buttons-->
+        <div class="header-buttons">
+            <a class="sidebar-toggler" href="#">
+                <i class="fa fa-arrows-h"></i>
+            </a>
+            <a class="refresh" id="refresh-toggler" href="">
+                <i class="glyphicon glyphicon-refresh"></i>
+            </a>
+            <a class="fullscreen" id="fullscreen-toggler" href="#">
+                <i class="glyphicon glyphicon-fullscreen"></i>
+            </a>
+        </div>
+        <!--Header Buttons End-->
+    </div>
+    <!-- /Page Header -->
+    <!-- Page Body -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div class="widget">
+                    <div class="widget-header ">
+                        <span class="widget-caption">文章列表</span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                            <a href="#" data-toggle="collapse">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                            <a href="#" data-toggle="dispose">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="table-toolbar">
+                          {if in_array(25,$auth)}
+                            <a id="editabledatatable_new" href="{:url('admin/article/add')}" class="btn btn-default">
+                                添加文章
+                            </a>
+                          {/if}
+                        </div>
+                        <table class="table table-striped table-hover table-bordered" id="editabledatatable">
+                            <thead>
+                                <tr class="active">
+                                    <th style="width: 50px">编号</th>
+                                    <th>所属分类</th>
+                                    <th>文章名称</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               {volist name="articles" id="vo"}
+                                    <tr class="success">
+                                        <td class="text-left">{$vo.id}</td>
+                                        <td>{$vo->parent['title']}</td>
+                                        <td class="text-left">{$vo.title}</td>
+                                        <td>
+                                            {if in_array(26,$auth)}
+                                            <a class="btn btn-info btn-xs edit" href="{:url('admin/article/edit',['id'=>$vo['id']])}"><i class="fa fa-edit"></i>编辑</a>
+                                            {/if}
+                                            {if in_array(27,$auth)}
+                                            <a class="btn btn-danger btn-xs delete" href="javascript:articleDelete({$vo['id']})"><i class="fa fa-trash-o"></i>删除</a>
+                                            {/if}
+                                        </td>
+                                    </tr>
+                                {/volist}
+
+                            </tbody> 
+                        </table>
+                        <div>{$articles->render()}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Body -->
+</div>
+{/block}
+{block name="script"}
+    <script>
+        //权限节点删除
+        function articleDelete(id)
+        {
+            bootbox.confirm("是否删除该文章", function (result) {
+                if (result) {
+                    $.ajax({
+                        type: "POST",
+                        url: '{:url("admin/article/delete")}',
+                        dataType: 'json',
+                        cache: false,
+                        data:{id:id},
+                        success: function(data) {
+                            console.log(data);
+                            if(data.status>0){
+                                success({msg:"删除成功",url:""});
+                            }else{
+                                error({msg:data.msg});
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(xhr);
+                            console.log(status);
+                            console.log(error);
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+{/block}

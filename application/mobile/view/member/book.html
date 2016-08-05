@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的发布</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    {include file="public/style" /}
+    <style type="text/css">
+    .myb_list .myb_item .myb_time .zf{
+        color: #4898d5;
+    }
+
+    .myb_list .myb_item .myb_time .zf .fa{
+        color: #4898d5;
+    }
+    </style>
+</head>
+
+<body style="background-color: #F0F0F0;" id="book">
+    <div class="myb_list">
+        <!-- <div class="myb_item">
+            <div class="myb_time">
+                <i class="fa fa-calendar"></i>2016年8月1日 16:23 <span class="state jx"><i class="fa fa-circle"></i>进行中</span>
+            </div>
+            <div class="myb_desc">
+                <div class="mybd_l">
+                    <p><i class="fa fa-map-marker"></i>始发地：昆弥</p>
+                    <p><i class="fa fa-map-marker"></i>目的地：昆弥</p>
+                    <p><i class="fa "></i>车主：昆c弥</p>
+                    <p><i class="fa "></i>车牌号：昆弥</p>
+                    <p><i class="fa"></i>联系方式：133</p>
+                    <p><i class="fa "></i>品牌：昆弥</p>
+                    <p><i class="fa "></i>颜色：昆弥</p>
+                </div>
+                <div class="mybd_r">
+                    <div class="mybd_rs">
+                        <a href="tel:123456789"><img src="/mobile/img/phone.png" alt=""></a>
+                        <button type="">确认完成</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="myb_item">
+            <div class="myb_time">
+                <i class="fa fa-calendar"></i>2016年8月1日 16:23 
+                <span class="state succ"><i class="fa fa-circle"></i>已完成</span>
+            </div>
+            <div class="myb_desc">
+                <div class="mybd_l">
+                    <p><i class="fa fa-map-marker"></i>始发地：昆弥</p>
+                    <p><i class="fa fa-map-marker"></i>目的地：昆弥</p>
+                    <p><i class="fa "></i>车主：昆c弥</p>
+                    <p><i class="fa "></i>车牌号：昆弥</p>
+                    <p><i class="fa"></i>联系方式：昆弥</p>
+                    <p><i class="fa "></i>品牌：昆弥</p>
+                    <p><i class="fa "></i>颜色：昆弥</p>
+                </div>
+                <div class="mybd_r">
+                    <div class="mybd_rs">
+                        <img src="/mobile/img/ss.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="myb_item" v-for="vo in list">
+            <div class="myb_time">
+                <i class="fa fa-calendar"></i>{{vo.go_time}}
+                <span class="state zf" v-if="vo.status == 0" @click="pay(vo.id)">
+                    <i class="fa fa-circle"></i>去支付
+                </span>
+                <span class="state jx" v-if="vo.status == 1">
+                    <i class="fa fa-circle"></i>进行中
+                </span>
+                <span class="state succ" v-if="vo.status == 2">
+                    <i class="fa fa-circle"></i>已完成
+                </span>
+            </div>
+            <div class="myb_desc">
+                <div class="mybd_l">
+                    <p><i class="fa fa-map-marker"></i>始发地：{{vo.from}}</p>
+                    <p><i class="fa fa-map-marker"></i>目的地：{{vo.to}}</p>
+                    <p><i class="fa "></i>行程总价：{{vo.price}}&nbsp;元</p>
+                    <p><i class="fa "></i>联系人：{{vo.name}}</p>
+                    <p><i class="fa"></i>联系方式：{{vo.phone}}</p>
+                </div>
+                <div class="mybd_r" v-if="vo.status == 1">
+                    <div class="mybd_rs">
+                        <a href="tel:{$con.phoneNo}"><img src="/mobile/img/phone.png" alt=""></a>
+                        <button @click="confirm(vo.id)" type="button" style="margin-top: 5px;">确认完成</button>
+                    </div>
+                </div>
+                <div class="mybd_r" v-if="vo.status == 0">
+                    <div class="mybd_rs" style="margin-top: 20px;" @click="delOrder(vo.id,$index)">
+                        <img src="/mobile/img/ss.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;margin-top:10px;" id="loadmore">
+            <i id="loadmore_i" class="fa fa-spin fa-spinner" style="font-size: 20px"></i>
+        </div>
+    </div>
+
+    <script type="text/javascript" >
+    $(function(){
+        $(".myb_desc .mybd_r .mybd_rs").each(function(){
+            var s = $(this);
+            s.css("margin-top",(s.parent().parent().height()-s.height()));
+        });
+    });
+    $(document).ready(function() {
+        $(window).scroll(function() {
+            if ($(document).scrollTop() >= $(document).height() - $(window).height())
+            {
+                if(vn.more == true){
+                    vn.listData(++vn.page);
+                }else{
+                    $("#loadmore").hide();
+                }
+            }
+        });
+    });
+    var vn = new Vue({
+        el: '#book',
+        data: {
+            list: [],
+            page: 0,
+            busy: false,
+            more:true,
+        },
+        created:function(){
+            if(this.busy==false){
+                $("#loadmore").show(500);
+            }
+            this.listData(this.page);
+        },
+        methods: {
+            listData: function(page){
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("mobile/member/book")}',
+                    dataType: 'json',
+                    cache: false,
+                    data: {page:page},
+                    success: function(data) {
+                        if(data.length > 0){
+                            setTimeout(function(){
+                                vn.busy = true;
+                                vn.list = vn.list.concat(data);
+                            }, 2000);
+                        }else{
+                            vn.more = false;
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                      console.log('系统错误');
+                    }
+                });
+            },
+            pay:function(id){
+                window.location.href = '/mobile/pay/index/id/'+id+'.html';
+            },
+            delOrder:function(id,item){
+                layer.open({
+                    content: '你是否取消预约？',
+                    btn: ['确认', '取消'],
+                    shadeClose: true,
+                    yes: function(index){
+                        $.ajax({
+                            type: "POST",
+                            url: '{:url("mobile/order/delete")}',
+                            dataType: 'json',
+                            cache: false,
+                            data: {id:id},
+                            success: function(data) {
+                                if(data.status > 0){
+                                    vn.list.splice(item, 1);
+                                    layer.close(index);
+                                }else{
+                                    layer.close(index);
+                                    setTimeout(function(){
+                                        layer.msg(data.msg);
+                                    }, 2000);
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                              console.log('系统错误');
+                            }
+                        });
+                    }, no: function(){
+                        layer.msg('取消');
+                    }
+                });
+            },
+            confirm:function(id){
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("mobile/order/confirm")}',
+                    dataType: 'json',
+                    cache: false,
+                    data: {id:id},
+                    success: function(data) {
+                        if(data.status > 0){
+                            location.reload();
+                        }else{
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                      console.log('系统错误');
+                    }
+                });
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+{extend name="base:base" /}
+{block name="style"}
+<style>
+    .input-label{
+        width:500px;
+    }
+</style>
+{/block}
+{block name="content"}
+<div class="page-content" id="addBrand">
+    <!-- Page Breadcrumb -->
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="#">控制面板</a>
+            </li>
+            <li>
+                <a href="#">车辆管理</a>
+            </li>
+            <li class="active">品牌添加</li>
+        </ul>
+    </div>
+    <!-- /Page Breadcrumb -->
+    <!-- Page Header -->
+    <div class="page-header position-relative">
+        <div class="header-title">
+            <h1>
+                品牌添加
+            </h1>
+        </div>
+        <!--Header Buttons-->
+        <div class="header-buttons">
+            <a class="sidebar-toggler" href="#">
+                <i class="fa fa-arrows-h"></i>
+            </a>
+            <a class="refresh" id="refresh-toggler" href="">
+                <i class="glyphicon glyphicon-refresh"></i>
+            </a>
+            <a class="fullscreen" id="fullscreen-toggler" href="#">
+                <i class="glyphicon glyphicon-fullscreen"></i>
+            </a>
+        </div>
+        <!--Header Buttons End-->
+    </div>
+    <!-- /Page Header -->
+    <!-- Page Body -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="widget flat radius-bordered">
+                    <div class="widget-header bordered-bottom bordered-themeprimary">
+                        <span class="widget-caption">品牌添加</span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div id="horizontal-form">
+                        <validator name="addBrandValidation">
+                            <form class="form-horizontal" role="form" novalidate>
+                                
+                                <div class="form-group">
+                                    <label for="input" class="col-sm-2 control-label no-padding-right">品牌名称</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="name" class="form-control input-label"  placeholder="品牌名称" v-validate:name="{ required: true}" v-model="brand.name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button @click="addBrand()"  :disabled="$addBrandValidation.invalid" type="button" class="btn btn-blue">保 存</button>
+                                    </div>
+                                </div>
+                            </form>
+                            </validator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Body -->
+</div>
+{/block}
+{block name="script"}
+<!--     <script src="/static/js/start.js" type="text/javascript"></script>
+    <script src="/static/js/uploadpic.js" type="text/javascript"></script> -->
+    <script>
+
+    new Vue({
+        el: '#addBrand',
+        data: {
+            brand: {},
+        },
+        created: function () {
+        },
+        methods: {
+            addBrand: function () {
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("admin/brand/add")}',
+                    dataType: 'json',
+                    cache: false,
+                    data: this.brand,
+                    success: function(data) {
+                        if(data.status>0){
+                            success({msg:"添加成功",url:'{:url("Admin/brand/index")}'});
+                        }else{
+                            error({msg:data.msg});
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('系统错误');
+                    }
+                });
+            }
+        }
+        })
+    </script>
+{/block}

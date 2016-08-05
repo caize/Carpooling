@@ -1,0 +1,129 @@
+{extend name="base:base" /}
+{block name="style"}
+<style>
+    .input-label{
+        width:500px;
+    }
+</style>
+{/block}
+{block name="content"}
+<div class="page-content" id="addConfig">
+    <!-- Page Breadcrumb -->
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="#">控制面板</a>
+            </li>
+            <li>
+                <a href="#">系统管理</a>
+            </li>
+            <li class="active">商城信息</li>
+        </ul>
+    </div>
+    <!-- /Page Breadcrumb -->
+    <!-- Page Header -->
+    <div class="page-header position-relative">
+        <div class="header-title">
+            <h1>
+                商城信息
+            </h1>
+        </div>
+        <!--Header Buttons-->
+        <div class="header-buttons">
+            <a class="sidebar-toggler" href="#">
+                <i class="fa fa-arrows-h"></i>
+            </a>
+            <a class="refresh" id="refresh-toggler" href="">
+                <i class="glyphicon glyphicon-refresh"></i>
+            </a>
+            <a class="fullscreen" id="fullscreen-toggler" href="#">
+                <i class="glyphicon glyphicon-fullscreen"></i>
+            </a>
+        </div>
+        <!--Header Buttons End-->
+    </div>
+    <!-- /Page Header -->
+    <!-- Page Body -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="widget flat radius-bordered">
+                    <div class="widget-header bordered-bottom bordered-themeprimary">
+                        <span class="widget-caption">商城信息</span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div id="horizontal-form">
+                            <form class="form-horizontal" role="form" novalidate>
+                                {volist name="$configs" id="vo"}
+                                <div class="form-group">
+                                    <label for="input" class="col-sm-2 control-label no-padding-right">{$vo.name}</label>
+                                    <div class="col-sm-10">
+                                        {if $vo.type == 'text'}
+                                        <input type="text" class="form-control input-label" id="{$vo.code}" v-model="config.{$vo.code}" name='{$vo.code}' value="{$vo.content}">
+                                        {/if}
+                                        {if $vo.type == 'textarea'}
+                                        <textarea class="form-control input-label" placeholder="Content" name="{$vo.code}" style='height:100px;' v-model="config.{$vo.code}" id="{$vo.code}">{$vo.content}</textarea>
+                                        {/if}
+                                        {if $vo.type == 'upload'}
+                                        <img src="{$vo.content|default='/mobile/img/jia.png'}" style="max-width:100px; max-height:100px;" id="{$vo.code}"  class="img-circle upload">
+                                        <input type="hidden" name="{$vo.code}" value="{$vo.content}"/>
+                                        {/if}
+                                    </div>
+                                </div>
+                                {/volist}
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="button" @click="saveConfig()" class="btn btn-azure">保 存</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Body -->
+</div>
+{/block}
+{block name="script"}
+    <script src="/static/js/start.js" type="text/javascript"></script>
+    <script src="/static/js/uploadpic.js" type="text/javascript"></script>
+    <script>
+    new Vue({
+      el: '#addConfig',
+      data: {
+        config: {},
+        msg:''
+      },
+      methods: {
+        saveConfig: function () {
+            this.config.mallLogo = $('#mallLogo').attr('src');
+            $.ajax({
+                type: "POST",
+                url: '{:url("admin/sys/index")}',
+                dataType: 'json',
+                cache: false,
+                data: this.config,
+                success: function(data) {
+                    if(data.status>0){
+                        success({msg:"修改成功",url:""});
+                    }else{
+                        console.log(data);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('系统错误')
+                }
+            });
+        }
+      }
+    })
+    </script>
+{/block}

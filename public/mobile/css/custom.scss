@@ -1,0 +1,366 @@
+    @import 'C://Users//chouchong//bourbon//bourbon';
+    //@import '../../bourbon-master/bourbon-master/app/assets/stylesheets/bourbon';
+    @import 'partials/variables'; // colors, fonts etc...
+    @import 'partials/mixins'; // custom mixins
+    @import 'partials/layout'; // responsive grid and media queries
+    html {
+        font-size: 62.5%;
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        font-size: $font-size;
+    }
+    
+    a {
+        text-decoration: none;
+    }
+    
+    body,
+    #menu,
+    div,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    a {
+        font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", STXihei, SimSun, Heiti, sans-serif !important;
+    }
+    
+    li {
+        list-style: none;
+    }
+    
+    body {
+        background: #fff;
+    }
+    
+    // login.html
+    #btn_login {
+        button {
+            background: #FDAA4F;
+            color: #fff;
+            border-radius: 0;
+        }
+    }
+    
+    .form_msg {
+        // display: none;
+        text-align: center;
+        color: #f44;
+    }
+    
+    .login_lostreg {
+        text-align: center;
+        padding: 20px;
+    }
+    
+    //register.html
+    #sendyzm {
+        border-radius: 0;
+        height: 47px;
+        background: #FDAA4F;
+        text-align: center;
+        color: #fff;
+        line-height: 47px;
+    }
+    
+    #sendyzmimg {
+        height: 47px;
+        // width:200px;
+        background: #fff;
+        text-align: center;
+        color: #fff;
+        line-height: 47px;
+    }
+    
+    // mybook.html
+    .myb_list {
+        width: 100%;
+        background-color: #F0F0F0;
+        color: #888;
+        height: 100%;
+        .myb_item {
+            margin-bottom: 10px;
+            min-height: 20px;
+            overflow: hidden;
+            background-color: #fff;
+            padding-bottom: 10px;
+            .fa {
+                width: 20px;
+                color: #FDAA4F;
+                text-align: center;
+            }
+            .myb_time {
+                padding: 10px;
+                border-bottom: 1px #eee solid;
+                .state{
+                    float:right;
+                }
+                .jx{
+                    color:#FDAA4F;
+                }
+                .succ{
+                    .fa{
+
+                    color:#aaa;
+                    }
+                    color:#aaa;
+                }
+            }
+            .myb_desc {
+                padding: 10px;
+                min-height: 10px;
+                overflow:hidden;
+                .mybd_l {
+                    float: left;
+                    width: 70%;
+                    p {
+                        letter-spacing: 2px;
+                        line-height: 20px;
+                    }
+                }
+                .mybd_r {
+                    width: 30%;
+                    text-align: center;
+                    float: left;
+                    // position: relative;
+                    .mybd_rs {
+                        // position: absolute;
+                        bottom: 0;
+                        img {
+                            width: 50%;
+                            max-width: 50px;
+                        }
+                        button {
+                            width: 80%;
+                            height: 30px;
+                            border: 0;
+                            color: #fff;
+                            background-color: #FDAA4F;
+                        }
+                    }
+                }
+            }
+        }
+    }
+// user.html
+.user{
+    position:relative;
+    width:100%;
+    height:220px;
+    overflow:hidden;
+    .user_bg{
+        // width:100%
+        height:220px;
+    }
+    img{
+        position:absolute;
+        bottom:0;
+    }
+    .txpng{
+        width:200px;
+        height:70px;
+        position:absolute;
+        bottom:30px;
+        left:30px;
+       img{
+        border-radius: 35px;
+        border:3px #FDAA4F solid;
+        width:70px;
+        height:70px;
+       }
+    }
+    .username{
+         width:200px;
+        // height:70px;
+        position:absolute;
+        bottom:55px;
+        left:130px;
+        color:#fff;
+    }
+    .userset{
+        width:40px;
+        height:40px;
+       position:absolute;
+       border-radius: 20px;
+       top:10px;
+       right:10px;
+       img{
+        width:40px;
+        height:40px;
+       }
+    }
+}
+.usermenu{
+    width:100%;
+    .user_item{
+        background-color: #fff;
+        height:80px;
+        line-height: 80px;
+        img{
+            margin:15px;
+            margin-left: 20px;
+            width:50px;float:left;
+        }
+        .user_menut{
+            float:left;margin-left: 30px;
+            a{
+
+                color:#888;
+            }
+        }
+    }
+}
+.loginout{
+    margin-top:150px;
+    width:100%;text-align: center;
+    button{
+        border:0;
+        background-color: #FDAA4F;
+        width:50%;
+height:40px;
+font-size: 16px;
+color:#fff;
+border-radius: 1px;
+    }
+}
+
+  // uerset.html
+    .userset {
+        width: 100%;
+        background-color: #fff;
+        .us_img {
+            clear: both;
+            width: 100%;
+            height: 80px;
+            border-bottom: 1px #e6e6e6 solid;
+            .us_a {
+                float: left;
+                margin-left: 40px;
+                line-height: 80px;
+                width: 80px;
+            }
+            .us_imgr {
+                float: right;
+                height: 80px;
+                line-height: 80px;
+                width: 80px;
+                padding: 5px;
+                overflow: hidden;
+                img {
+                    border-radius: 100px;
+                    // width: 100%;
+                    height: 70px;
+                    width: 70px;
+                }
+            }
+        }
+        .us_name {
+            clear: both;
+            width: 100%;
+            height: 80px;
+            border-bottom: 1px #e6e6e6 solid;
+            .us_nl {
+                float: left;
+                margin-left: 40px;
+                line-height: 80px;
+                width: 80px;
+            }
+            .us_nr {
+                float: right;
+                margin-right: 5px;
+                line-height: 80px;
+                padding: 0 5px;
+            }
+        }
+        .us_sub {
+            width: 100%;
+            text-align: center;
+            .us_subbtn {
+                text-align: center;
+                width: 70%;
+                border-radius: 5px;
+                background-color: #FDAA4F;
+                line-height: 40px;
+                height: 40px;
+                border: 0;
+                color: #fff;
+            }
+        }
+    }
+
+    // pay.html
+    .pay_desc{
+        background-color: #fff;
+        // width:100%;
+        padding: 10px;
+        hr{
+            border:1px solid #aaa;
+        }
+        p{
+            line-height: 22px;
+            color:#666;
+            font-size: 16x;
+        }
+        .pd_time{
+font-weight: bold;
+            color:#333;
+            font-size: 17x;
+        }
+        .pd_to{margin-top:8px;
+            border-top:1px solid #eee;
+            padding:8px 0;
+            color:#FDAA4F;font-size: 18px;
+        }
+    }
+    .pay_way{
+        margin-top:20px;
+        background-color: #fff;
+        width:100%;
+        .paywitem{
+            height:50px;
+            line-height: 50px;
+            img{
+            margin:10px;
+                height:30px;
+                float:left;
+            }
+            .pw_t{
+                margin-left: 20px;
+                text-align: center;
+                font-size: 18px;
+                line-height: 50px;height: 50px;
+            }
+            .fa-check{color: #929292;
+                float:right;
+                font-size: 20px;
+                line-height: 50px;
+                margin-right: 20px;
+            }
+        }
+    }
+    .pay_btn{
+        margin-top:100px;
+        text-align: center;
+        p{
+            font-size: 20px;
+            color:#FDAA4F;
+        }
+        button{
+            border:0;
+            border-radius:1px;
+            color:#fff;
+            background-color: #FDAA4F;
+            width:95%;
+            height:40px;
+            font-size: 18px;
+        }
+    }

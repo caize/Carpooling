@@ -1,0 +1,204 @@
+{extend name="base:base" /}
+
+{block name="content"}
+<div class="page-content" id="addRole">
+    <!-- Page Breadcrumb -->
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="#">控制面板</a>
+            </li>
+            <li>
+                <a href="#">权限管理</a>
+            </li>
+            <li class="active">角色列表</li>
+        </ul>
+    </div>
+    <!-- /Page Breadcrumb -->
+    <!-- Page Header -->
+    <div class="page-header position-relative">
+        <div class="header-title">
+            <h1>
+                角色列表
+                <small>
+                </small>
+            </h1>
+        </div>
+        <!--Header Buttons-->
+        <div class="header-buttons">
+            <a class="sidebar-toggler" href="#">
+                <i class="fa fa-arrows-h"></i>
+            </a>
+            <a class="refresh" id="refresh-toggler" href="">
+                <i class="glyphicon glyphicon-refresh"></i>
+            </a>
+            <a class="fullscreen" id="fullscreen-toggler" href="#">
+                <i class="glyphicon glyphicon-fullscreen"></i>
+            </a>
+        </div>
+        <!--Header Buttons End-->
+    </div>
+    <!-- /Page Header -->
+    <!-- Page Body -->
+    <div class="page-body">
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-sky">
+                <span class="widget-caption">角色添加</span>
+            </div>
+            <div class="widget-body">
+                <validator name="addRoleValidation">
+                <form class="form-horizontal" role="form" novalidate>
+                    <table cellspacing="1" id="rs" class="table table-bordered table-hover">
+                        <tr>
+                            <td>
+                                <div class="col-lg-12 col-sm-12 col-xs-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <span class="text">角色名称</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" name="rolename"  class="form-control input-label" id="roleName" placeholder="角色名称" v-validate:rolename="{ required: true}" v-model="role.name">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="col-lg-12 col-sm-12 col-xs-12">
+                                    <div class="checkbox">
+                                        <label>
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                    <input v-model="role.status" type="checkbox" id="checkbox_fixednavbar">
+                                        <span class="text">是否启用</span>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        {volist name="lists" id="vo"}
+                        <tr class="r1">
+                            <td>
+                                <div class="col-lg-12 col-sm-12 col-xs-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" class="inverted" name="rules" value="{$vo.id}" id="rules_{$vo.id}">
+                                            <span class="text">{$vo.title}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                               {volist name="$vo->parent" id="vo1"}
+                                <div>
+                                    <div class="col-lg-12 col-sm-12 col-xs-12 r2" style="background:#ccc;">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" class="inverted" name="rules" value="{$vo1.id}" id="rules_{$vo1.id}">
+                                                <span class="text">{$vo1.title}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {volist name="$vo1->parent" id="vo2"}
+                                    <div class="col-lg-2 col-sm-2 col-xs-2 r3">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" class="inverted" name="rules" value="{$vo2.id}" id="rules_{$vo2.id}">
+                                                <span class="text">{$vo2.title}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {/volist}
+                                    <div class="clearfix"></div>
+                                </div>
+                                {/volist}
+                            </td>
+                        </tr>
+                        {/volist}
+                        <tr>
+                            <td colspan="2">
+                                <button @click="addRole()" :disabled="$addRoleValidation.invalid" type="button" class="btn btn-blue">保 存</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </validator>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    <!-- /Page Body -->
+</div>
+{/block}
+{/block} {block name="script"}
+<script>
+$(function() {
+    $('.r1 td:nth-child(1) .inverted').on('click', function() {
+        if ($(this).prop('checked')) {
+            $(this).closest('td').siblings().find('.inverted').prop('checked', true);
+        } else {
+            $(this).closest('td').siblings().find('.inverted').prop('checked', false);
+        }
+    });
+    $('.r1 td:nth-child(2) .r2 .inverted').on('click', function() {
+        if($(this).prop('checked')){
+            $(this).closest('.r2').siblings('.r3').find('.inverted').prop('checked', true);
+        }else{
+            $(this).closest('.r2').siblings('.r3').find('.inverted').prop('checked', false);
+        }
+    });
+})
+new Vue({
+    el: '#addRole',
+    data: {
+        role: {}
+    },
+    methods: {
+        addRole: function () {
+            let grant = [];
+            $('.inverted').each(function(){
+               if($(this).prop('checked'))grant.push($(this).val());
+            });
+            this.role.status=this.role.status?1:0;
+            this.role.rules = grant;
+            $.ajax({
+                type: "POST",
+                url: '{:url("admin/role/add")}',
+                dataType: 'json',
+                cache: false,
+                data: this.role,
+                success: function(data) {
+                    if(data.status>0){
+                        $('#modal-success').modal('show');
+                        $('#modal-success').find('.modal-body').html("添加成功");
+                        setTimeout(function(){
+                            window.location.href = '{:url("Admin/role/index")}';
+                        },3*1000);
+                    }else{
+                        $('#modal-danger').modal('show');
+                        $('#modal-danger').find('.modal-body').html(data.msg);
+                        setTimeout(function(){
+                            $('#modal-danger').modal('hide');
+                        },2*1000);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                }
+            });
+        }
+    }
+})
+</script>
+{/block}

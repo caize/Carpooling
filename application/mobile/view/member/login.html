@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-cn" style="overflow: visible;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>会员-登陆</title>
+    {include file="public/style" /}
+    <link rel="stylesheet" type="text/css" href="/mobile/css/ionic.min.css">
+    <style type="text/css" media="screen">
+    .item-input{
+        border: 0;
+        border-bottom: 1px solid #ddd;
+    }
+    </style>
+</head>
+
+<body id="login">
+    <div class="content has-header" style="overflow: scroll;">
+  <validator name="loginValidation">
+      <div class="list list-inset">
+        <label class="item item-input">
+          <i class="icon ion-iphone placeholder-icon"></i>
+          <input type="text" name="phone" placeholder="手机号" v-validate:phone="{ required: true,minlength:11,maxlength:11}" v-model="user.phone">
+        </label>
+      </div>
+      <div class="list list-inset">
+        <label class="item item-input">
+          <i class="icon ion-android-lock placeholder-icon"></i>
+          <input type="password" placeholder="密码" name="password" v-validate:password="{ required: true, minlength:6, maxlength:12 }" v-model="user.password">
+        </label>
+      </div>
+      <div id="btn_login" class="padding">
+        <button class="button button-block" :disabled="$loginValidation.invalid" @click="addLogin()">登陆</button>
+      </div>
+      <div class="login_lostreg">
+          <a href="{:url('mobile/base/psd')}" title="">忘记密码</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="{:url('mobile/base/register')}" title="">注册账号</a>
+      </div>
+    </validator>
+    </div>
+</body>
+<script>
+   var vn = new Vue({
+    el: '#login',
+    data: {
+        user: {}
+    },
+    methods: {
+      addLogin: function(){
+        $.ajax({
+          type: "POST",
+          url: '{:url("mobile/member/login")}',
+          dataType: 'json',
+          cache: false,
+          data: this.user,
+          success: function(data) {
+              if(data.status > 0){
+                if('{$url}'!=''){
+                  window.location.href = '{$url}';
+                }else{
+                  layer.open({
+                    btn: ['发布行程', '个人中心']
+                    ,yes: function(index, layero){
+                      window.location.href = '{:url("mobile/car/index")}'
+                    },btn2: function(index, layero){
+                      window.location.href = '{:url("mobile/member/index")}'
+                    }
+                  });
+                }
+              }else{
+                  layer.msg(data.msg);
+              }
+          },
+          error: function(xhr, status, error) {
+              layer.msg('系统错误');
+          }
+        });
+      },
+    }
+  })
+</script>
+</html>

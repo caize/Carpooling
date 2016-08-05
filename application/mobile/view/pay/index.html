@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>订单支付</title>
+    {include file="public/style" /}
+</head>
+
+<body style="background-color: #f0f0f0;">
+  <div class="pay_desc">
+    <p class="pd_time">{$order.go_time}</p>
+    <p class="pd_t">始发地：{$order->areaFrom->name}</p>
+    <p class="pd_t">目的地：{$order->areaTo->name}</p>
+    <p class="pd_t">车辆要求：{$order->brand->name}</p>
+    <p class="pd_t">约车人信息：{$order.name} {$order.phone}</p>
+    <!-- <hr> -->
+    <p class="pd_to">总计 ￥{$order->price->price}，需要在线支付{$order.prepay}作为订金，剩下部分请当面结算给车主</p>
+  </div>
+  <div class="pay_way">
+    <div class="paywitem">
+      <img src="/mobile/img/wxpay.png" alt="">
+      <span class="pw_t">微信支付</span>
+      <span class="fa fa-check"></span>
+    </div>
+  </div>
+  <div class="pay_btn">
+    <p>￥{$order.prepay}</p>
+    <button type="button" onclick="callpay()">确认支付</button>
+  </div>
+</body>
+<script type="text/javascript">
+    //调用微信JS api 支付
+    function onBridgeReady() {
+      $.ajax({
+        type: "POST",
+        url: '{:url("Mobile/Pay/wxPay")}',
+        dataType: 'json',
+        cache: false,
+        data:{id:{$order.id},prepay:{$order.prepay}},
+        success: function(data) {
+          WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            data,
+            function (res) {
+              if (res.err_msg == "get_brand_wcpay_request:ok") {
+                window.location.href='{:url("mobile/Member/book")}';
+              }
+              if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                layer.msg('取消支付');
+              }
+            }
+          );
+        },
+        error: function(xhr, status, error) {
+            console.log('系统错误');
+        }
+      });
+    }
+    function callpay() {
+        if (typeof WeixinJSBridge == "undefined") {
+            if (document.addEventListener) {
+                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+            } else if (document.attachEvent) {
+                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+            }
+        } else {
+            onBridgeReady();
+        }
+    }
+</script>
+</html>

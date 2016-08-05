@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Head -->
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard</title>
+
+    <meta name="description" content="Dashboard" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+    <!--Basic Styles-->
+    {include file="public/style" /}
+    {block name="style"}{/block}
+</head>
+<!-- /Head -->
+<!-- Body -->
+<body>
+    <!-- Loading Container -->
+    {include file="public/loading" /}
+    <!--  /Loading Container -->
+    <!-- Navbar -->
+    {include file="public/nav" /}
+    <!-- /Navbar -->
+    <!-- Main Container -->
+    <div class="main-container container-fluid">
+        <!-- Page Container -->
+        <div class="page-container">
+            <!-- Page Sidebar -->
+            {include file="public/sidebar" /}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            {block name="content"}{/block}
+            <!-- /Page Content -->
+        </div>
+        <!-- /Page Container -->
+        <!-- Main Container -->
+
+    </div>
+
+    <!--Basic Scripts-->
+    {include file="public/script" /}
+    {include file="public/modal" /}
+    {include file="public/danger" /}
+    {block name="script"}{/block}
+    <script>
+    </script>
+</body>
+<!--  /Body -->
+</html>

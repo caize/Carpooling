@@ -1,0 +1,148 @@
+{extend name="base:base" /}
+{block name="style"}
+<style>
+    .input-label{
+        width:500px;
+    }
+    .zyupload {
+        margin:0;
+    }
+    #zyupload{
+        /*min-height: 1px;height: 1px;*/
+    }
+
+    .upload_preview {
+        width: 657px;
+    }
+</style>
+{/block}
+{block name="content"}
+<div class="page-content" id="addPrice">
+    <!-- Page Breadcrumb -->
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="#">控制面板</a>
+            </li>
+            <li>
+                <a href="#">车辆管理</a>
+            </li>
+            <li class="active">行程添加</li>
+        </ul>
+    </div>
+    <!-- /Page Breadcrumb -->
+    <!-- Page Header -->
+    <div class="page-header position-relative">
+        <div class="header-title">
+            <h1>
+                行程添加
+            </h1>
+        </div>
+        <!--Header Buttons-->
+        <div class="header-buttons">
+            <a class="sidebar-toggler" href="#">
+                <i class="fa fa-arrows-h"></i>
+            </a>
+            <a class="refresh" id="refresh-toggler" href="">
+                <i class="glyphicon glyphicon-refresh"></i>
+            </a>
+            <a class="fullscreen" id="fullscreen-toggler" href="#">
+                <i class="glyphicon glyphicon-fullscreen"></i>
+            </a>
+        </div>
+        <!--Header Buttons End-->
+    </div>
+    <!-- /Page Header -->
+    <!-- Page Body -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12">
+                <div class="widget flat radius-bordered">
+                    <div class="widget-header bordered-bottom bordered-themeprimary">
+                        <span class="widget-caption">行程添加</span>
+                        <div class="widget-buttons">
+                            <a href="#" data-toggle="maximize">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div id="horizontal-form">
+                        <validator name="addPriceValidation">
+                            <form class="form-horizontal" role="form" novalidate>
+                                <div class="form-group">
+                                    <label for="input" class="col-sm-2 control-label no-padding-right">行程</label>
+                                    <div class="col-sm-10">
+                                        <select style="width: 248px" id="e1" name="from" class="input-label" v-model="price.from" v-validate:from="{ required: true}"> 
+                                                <option value="" selected="true" />请选择出发城市
+                                                {volist name="city" id="vo"}
+                                                <option value="{$vo.id}"/>{$vo.name}
+                                                {/volist}
+                                        </select>
+                                        <select style="width: 248px" id="e1" name="to" class="input-label" v-model="price.to" v-validate:to="{ required: true}"> 
+                                                <option value="" selected="true" />请选择到达城市
+                                                {volist name="city" id="vo"}
+                                                <option value="{$vo.id}"/>{$vo.name}
+                                                {/volist}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input" class="col-sm-2 control-label no-padding-right">价格</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control input-label" name="price" placeholder="价格" v-validate:price="{ required: true}" v-model="price.price" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button @click="addPrice()"   :disabled="$addPriceValidation.invalid" type="button" class="btn btn-blue">保 存</button>
+                                    </div>
+                                </div>
+                            </form>
+                            </validator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Body -->
+</div>
+{/block}
+{block name="script"}
+    <script>
+    $(function(argument) {
+        var vn = new Vue({
+            el: '#addPrice',
+            data: {
+                price: {},
+            },
+            created: function () {
+            },
+            methods: {
+                addPrice: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: '{:url("admin/price/add")}',
+                        dataType: 'json',
+                        cache: false,
+                        data: this.price,
+                        success: function(data) {
+                            console.log(data);
+                            if(data.status>0){
+                               window.success({msg:'添加成功',url:"{:url('admin/price/index')}"});
+                            }else{
+                               window.error({msg:data.msg});
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('系统错误');
+                        }
+                    });
+                }
+            }
+        })
+    })
+    </script>
+{/block}

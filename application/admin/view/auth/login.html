@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--Head-->
+
+<head>
+    <meta charset="utf-8" />
+    <title>管理员登录</title>
+    <meta name="description" content="login page" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+    <!--Basic Styles-->
+    {include file="public/style" /}
+</head>
+<!--Head Ends-->
+<!--Body-->
+
+<body>
+    <div class="login-container animated fadeInDown" id="authLogin">
+        <validator name="signinValidation">
+        <form novalidate>
+          <div class="loginbox bg-white" style="height: 250px!important;">
+            <div class="loginbox-title">登录</div>
+            <div class="loginbox-social">
+                <div class="social-title ">联系你的社交账户</div>
+            </div>
+            <div class="loginbox-textbox">
+                <input type="text"
+                v-validate:usernameLogin="{ required: true}"
+                class="form-control"
+                placeholder="用户名"
+                v-model="user.usernamelogin">
+            </div>
+            <div class="loginbox-textbox">
+                <input type="password" v-model="user.password"
+                v-validate:password="{ required: true }"
+                class="form-control"
+                placeholder="密码"/>
+            </div>
+            <div class="loginbox-submit">
+            <button type="button" @click="doLogin()" class="btn btn-primary btn-block" :disabled="$signinValidation.invalid">登录</button>
+            </div>
+        </div>
+        </form>
+      </validator>
+        <div class="logobox" v-if="msg"><p style="color: red;line-height: 40px;
+    text-align: center;">{{msg}}</p></div>
+    </div>
+    <!--Basic Scripts-->
+    {include file="public/script" /}
+    {include file="public/modal" /}
+    <script>
+        "use strict";
+        var vm = new Vue({
+          el: '#authLogin',
+          data: {
+            user: {},
+            msg:''
+          },
+          methods: {
+            doLogin: function () {
+                $.ajax({
+                    type: "POST",
+                    url: '/admin/login.html',
+                    dataType: 'json',
+                    cache: false,
+                    data: this.user,
+                    success: function(data) {
+                        if(data.status>0){
+                            success({msg:"登陆成功",url:"{:url('Admin/Index/index')}"});
+                        }else{
+                            vm.$set('msg',data.msg)
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                    }
+                });
+            }
+          }
+        })
+    </script>
+</body>
+</html>

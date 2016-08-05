@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<!-- Head -->
+<head>
+    <meta charset="utf-8" />
+    <title>提示信息</title>
+
+    <meta name="description" content="modals and wells" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+
+    <!--Basic Styles-->
+    {include file="style" /}
+</head>
+<!-- /Head -->
+<!-- Body -->
+<body>
+
+    <!--End Email Templates-->
+    <!--Success Modal Templates-->
+    <div id="modal-success" class="modal modal-message modal-success fade" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="glyphicon glyphicon-check"></i>
+                </div>
+                <div class="modal-title">Success</div>
+
+                <div class="modal-body">{$msg}</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">OK</button>
+                </div>
+            </div> <!-- / .modal-content -->
+        </div> <!-- / .modal-dialog -->
+    </div>
+    <!--End Success Modal Templates-->
+
+    <!--End Modal Templates-->
+    <!--Basic Scripts-->
+    {include file="script" /}
+
+    <script type="text/javascript">
+    	$(function(){
+    		$('#modal-success').modal('toggle').on('hidden.bs.modal',function(e){
+	     		{if $url == ''}
+	     			history.go(-1);
+	     		{else}
+	     			window.location.href = "{$url}";
+	     		{/if}
+    		});
+    		{if $url == ''}
+    			setTimeout(function(){
+    				history.go(-1);
+    			},{$wait}*1000);
+    		{else}
+    			setTimeout(function(){
+    				window.location.href="{$url}";
+    			},{$wait}*1000);
+    		{/if}
+    	})
+    </script>
+
+    </body>
+    </html>

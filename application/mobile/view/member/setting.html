@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>用户设置</title>
+    {include file="public/style" /}
+</head>
+
+<body id="setting">
+    <div class="userset">
+        <div class="us_name">
+            <div class="us_nl">
+                昵称
+            </div>
+            <div class="us_nr" onclick="rename()">
+                <i class="fa fa-edit" style="color:#229"></i>&nbsp;&nbsp;<span id="newname">{$user.name}</span>
+            </div>
+        </div>
+        <div class="us_img">
+            <div class="us_a">
+                头像
+            </div>
+            <div class="us_imgr">
+                <label>
+                    <input type="file" id="userimg" hidden>
+                    <img id="result" src="{$user.auth}" alt="">
+                </label>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="us_sub">
+            <button class="us_subbtn" @click="setting()">提交</button>
+        </div>
+    </div>
+    <script>
+    function rename() {
+    //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值
+        layer.prompt({
+          title: '请输入您新昵称',
+          formType: 0 //prompt风格，支持0-2
+        }, function(value,index){
+            $("#newname").html(value);
+            layer.close(index);
+        });
+    }
+    var base64= new Array(); //定义一数组
+
+    window.onload = function() {
+        var input = document.getElementById("userimg");
+        var result = document.getElementById("result");
+        if (typeof(FileReader) === 'undefined') {
+            result.innerHTML = "抱歉，你的浏览器不支持 FileReader，请使用现代浏览器操作！";
+            input.setAttribute('disabled', 'disabled');
+        } else {
+            input.addEventListener('change', readFile, false);
+        }
+    }
+
+    function readFile() {
+        var file = this.files[0];
+        //这里我们判断下类型如果不是图片就返回 去掉就可以上传任意文件
+        if (!/image\/\w+/.test(file.type)) {
+            alert("请确保文件为图像类型");
+            return false;
+        }
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e) {
+            base64 = this.result;
+            $("#result").attr("src", base64);
+        }
+    }
+    var vn = new Vue({
+        el: '#setting',
+        data: {
+            user: {}
+        },
+        methods: {
+            setting: function(){
+                this.user.name = $("#newname").html();
+                this.user.auth = $("#result").attr("src");
+                $.ajax({
+                    type: "POST",
+                    url: '{:url("mobile/member/setting")}',
+                    dataType: 'json',
+                    cache: false,
+                    data: this.user,
+                    success: function(data) {
+                          if(data.status > 0){
+                            layer.msg('修改成功');
+                            setInterval(function() {
+                                window.location.href = '{:url("mobile/member/index")}'
+                            }, 2000);
+                          }else{
+                              layer.msg(data.msg);
+                          }
+                    },
+                    error: function(xhr, status, error) {
+                          layer.msg('系统错误');
+                    }
+                });
+            },
+        }
+    })
+</script>
+</body>
+
+</html>

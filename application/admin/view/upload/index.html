@@ -1,0 +1,58 @@
+<link href="/static/js/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+<!-- canvas-to-blob.min.js is only needed if you wish to resize images before upload.
+     This must be loaded before fileinput.min.js -->
+<script src="/static/js/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js" type="text/javascript"></script>
+<!-- sortable.min.js is only needed if you wish to sort / rearrange files in initial preview.
+     This must be loaded before fileinput.min.js -->
+<script src="/static/js/bootstrap-fileinput/js/plugins/sortable.min.js" type="text/javascript"></script>
+<!-- purify.min.js is only needed if you wish to purify HTML content in your preview for HTML files.
+     This must be loaded before fileinput.min.js -->
+<script src="/static/js/bootstrap-fileinput/js/plugins/purify.min.js" type="text/javascript"></script>
+<!-- the main fileinput plugin file -->
+<script src="/static/js/bootstrap-fileinput/js/fileinput.js" type="text/javascript"></script>
+<!-- optionally if you need a theme like font awesome theme you can include 
+    it as mentioned below -->
+<script src="/static/js/bootstrap-fileinput/js/themes/gly.js"></script>
+<!-- optionally if you need translation for your language then include
+    locale file as mentioned below -->
+<script src="/static/js/bootstrap-fileinput/js/locales/zh.js" type="text/javascript"></script>
+<div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#file-upload" aria-controls="file-upload" role="tab" data-toggle="tab">上传新的文件</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content" style="height:400px;overflow-y: scroll;overflow-x: hidden;">
+        <div role="tabpanel" class="tab-pane active" id="file-upload">
+            <div class="row" style="margin:10px 0;">
+                <div class="col-sm-12">
+                    <input id="upload-input" type="file" class="file-loading" name="imgFile" multiple>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(argument) {
+  $("#upload-input").fileinput({
+      maxFileCount: 1, //表示允许同时上传的最大文件个数
+      allowedFileExtensions: ["jpg", "png", "gif"],
+      uploadUrl: "/admin/upload/index/id/{$id}", // your upload server url
+      overwriteInitial:false,
+      language: 'zh',
+      enctype: 'multipart/form-data',
+      // uploadAsync:false,
+  }).on('fileuploaded',function (event, data) {
+    var form = data.form, files = data.files, extra = data.extra,response = data.response, reader = data.reader, self=this;
+    bootbox.hideAll();
+    $('#{$id}').attr('src',response.file);
+    $("input[name='{$id}']").remove();
+    $('#{$id}').after($('<input>',{
+      type:'hidden',
+      name:'{$id}',
+      value:response.file
+    }));
+  });
+});
+
+</script>
